@@ -1,0 +1,328 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    UNIFIED DECISION INTERFACE ARCHITECTURE                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                             APPLICATION LAYER                                │
+│                                                                              │
+│  Your Application Code (Python/C++)                                         │
+│  - Smart Firewall                                                           │
+│  - Autonomous Vehicle                                                       │
+│  - Edge AI Gateway                                                          │
+│  - Network Security                                                         │
+└────────────────────────────────┬─────────────────────────────────────────────┘
+                                 │
+                                 │ Single Unified API
+                                 │
+┌────────────────────────────────▼─────────────────────────────────────────────┐
+│                      UNIFIED DECISION INTERFACE                              │
+│                                                                              │
+│  • register_engine(engine)         Register hardware backends               │
+│  • process(data, hw_type)          Process on specific hardware             │
+│  • batch_process(inputs)           High-throughput batch                    │
+│  • get_best_hardware(data)         Automatic routing                        │
+│  • process_with_fallback(...)      Resilient processing                     │
+└──────────────────────┬───────────────────┬───────────────────┬──────────────┘
+                       │                   │                   │
+         ┌─────────────▼──────┐  ┌─────────▼──────┐  ┌────────▼──────────┐
+         │  StingrayEngine    │  │  OcteonEngine  │  │  TrueNorthEngine  │
+         │  (DecisionEngine)  │  │  (DecisionEngine)│  │  (DecisionEngine) │
+         └──────────┬──────────┘  └────────┬───────┘  └────────┬──────────┘
+                    │                      │                    │
+         ┌──────────▼──────────┐  ┌───────▼────────┐  ┌────────▼──────────┐
+         │                     │  │                │  │                   │
+         │  BROADCOM STINGRAY  │  │ MARVELL OCTEON │  │  IBM TRUENORTH    │
+         │   ARM Processor     │  │   10 DPU       │  │  Neuromorphic     │
+         │                     │  │                │  │                   │
+         └─────────────────────┘  └────────────────┘  └───────────────────┘
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                          HARDWARE SPECIFICATIONS                             ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ BROADCOM STINGRAY                                                            │
+│ ────────────────────────────────────────────────────────────────────────────│
+│ Architecture:  32-core ARM Cortex-A72                                       │
+│ ISA:           ARMv8-A 64-bit                                               │
+│ SIMD:          ARM NEON                                                     │
+│ Clock:         Up to 3.0 GHz                                                │
+│ Memory:        Up to 256GB DDR4                                             │
+│ Power:         50-120W TDP                                                  │
+│                                                                              │
+│ Optimizations:                                                              │
+│  ✓ ARM Compute Library integration                                         │
+│  ✓ ONNX Runtime with ARM optimizations                                     │
+│  ✓ TensorFlow Lite with XNNPACK                                            │
+│  ✓ FP16 half-precision support                                             │
+│  ✓ Multi-threaded batch processing                                         │
+│                                                                              │
+│ Best For:                                                                   │
+│  • General-purpose ML inference                                             │
+│  • CNNs, transformers, traditional models                                   │
+│  • Server-side AI workloads                                                 │
+│  • Storage/network controller intelligence                                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ MARVELL OCTEON 10                                                            │
+│ ────────────────────────────────────────────────────────────────────────────│
+│ Architecture:  24 MIPS64 cores + 8 packet engines                           │
+│ ISA:           MIPS64 cnMIPS                                                │
+│ Packet Rate:   400 Mpps (million packets per second)                        │
+│ Throughput:    Up to 400 Gbps                                               │
+│ Power:         50-90W TDP                                                   │
+│                                                                              │
+│ Hardware Accelerators:                                                      │
+│  ✓ Deep Packet Inspection (DPI) engine                                     │
+│  ✓ Regex pattern matching engine                                           │
+│  ✓ Crypto: AES, SHA, PKI (inline at line rate)                            │
+│  ✓ Compression/decompression offload                                       │
+│  ✓ Traffic management and QoS                                              │
+│  ✓ VXLAN, IPsec, TLS offload                                               │
+│                                                                              │
+│ Best For:                                                                   │
+│  • Network packet classification                                            │
+│  • Real-time threat detection                                               │
+│  • Inline security (firewall, IDS/IPS)                                     │
+│  • Smart NIC / DPU applications                                             │
+│  • Line-rate traffic management                                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ IBM TRUENORTH                                                                │
+│ ────────────────────────────────────────────────────────────────────────────│
+│ Architecture:  4,096 neurosynaptic cores                                    │
+│ Neurons:       1,048,576 (256 per core)                                    │
+│ Synapses:      268,435,456 (256K per core)                                 │
+│ Power:         70 mW (entire chip!)                                         │
+│ Power/Neuron:  ~0.1 μW per neuron                                          │
+│ Event-Driven:  Asynchronous (no clock)                                     │
+│                                                                              │
+│ Neuromorphic Features:                                                      │
+│  ✓ Spiking neural networks (SNNs)                                          │
+│  ✓ Event-driven processing (only active when spikes occur)                 │
+│  ✓ Rate coding & temporal coding                                           │
+│  ✓ Ultra-low power consumption                                             │
+│  ✓ Real-time pattern recognition                                           │
+│  ✓ Always-on operation capability                                          │
+│                                                                              │
+│ Best For:                                                                   │
+│  • Ultra-low-power edge AI                                                  │
+│  • Event-based sensors (DVS cameras)                                        │
+│  • Always-on pattern detection                                              │
+│  • Sensor fusion on battery power                                           │
+│  • Embedded neuromorphic computing                                          │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                             DATA FLOW DIAGRAM                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+                              ┌─────────────┐
+                              │   Raw Data  │
+                              │             │
+                              │ • Images    │
+                              │ • Packets   │
+                              │ • Spikes    │
+                              │ • Tensors   │
+                              └──────┬──────┘
+                                     │
+                              ┌──────▼──────┐
+                              │  InputData  │
+                              │  Structure  │
+                              └──────┬──────┘
+                                     │
+                        ┌────────────▼────────────┐
+                        │ Automatic Hardware      │
+                        │ Selection (Optional)    │
+                        │                         │
+                        │ get_best_hardware()     │
+                        └────────────┬────────────┘
+                                     │
+              ┌──────────────────────┼──────────────────────┐
+              │                      │                      │
+    ┌─────────▼─────────┐  ┌─────────▼─────────┐  ┌───────▼────────┐
+    │   Stingray        │  │    OCTEON 10      │  │   TrueNorth    │
+    │   ARM Inference   │  │   DPI Engine      │  │   SNN Inference│
+    │                   │  │                   │  │                │
+    │ • Load tensor     │  │ • Parse packet    │  │ • Encode spikes│
+    │ • Run CNN/MLP     │  │ • Pattern match   │  │ • Propagate    │
+    │ • NEON optimize   │  │ • Crypto check    │  │ • Decode       │
+    │ • Return class    │  │ • DPI analysis    │  │ • Return class │
+    └─────────┬─────────┘  └─────────┬─────────┘  └───────┬────────┘
+              │                      │                      │
+              └──────────────────────┼──────────────────────┘
+                                     │
+                              ┌──────▼──────┐
+                              │  Decision   │
+                              │  Structure  │
+                              │             │
+                              │ • Result    │
+                              │ • Confidence│
+                              │ • Latency   │
+                              │ • Metadata  │
+                              └──────┬──────┘
+                                     │
+                              ┌──────▼──────┐
+                              │ Application │
+                              │   Action    │
+                              └─────────────┘
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                            USE CASE EXAMPLES                                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ USE CASE 1: Smart Network Firewall                                          │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+   Internet Traffic (400 Gbps)
+           │
+           ▼
+   ┌──────────────┐
+   │   OCTEON 10  │◄─── Fast Path: Hardware packet classification
+   │   DPU        │     • Regex pattern matching
+   └──────┬───┬───┘     • DPI at line rate
+          │   │         • Drop malicious (1μs latency)
+    Clean │   │ Suspicious
+          │   │
+          │   ▼
+          │   ┌──────────────┐
+          │   │  Stingray    │◄─── Slow Path: Deep ML analysis
+          │   │  ARM + CNN   │     • Threat classification
+          │   └──────┬───────┘     • Anomaly detection
+          │          │              • Behavioral analysis
+          │          ▼
+          │   ┌──────────────┐
+          │   │ Drop/Forward │
+          │   │   Decision   │
+          │   └──────────────┘
+          │
+          ▼
+    Application Servers
+
+Result: 400 Gbps line-rate security with AI enhancement
+        • 99.9% traffic handled by OCTEON (<1μs)
+        • 0.1% escalated to Stingray for deep analysis
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ USE CASE 2: Autonomous Vehicle Sensor Fusion                                │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+    RGB Camera          Event Camera        Radar
+    (60 FPS)           (DVS Sensor)      (Continuous)
+        │                   │                 │
+        ▼                   ▼                 ▼
+    ┌────────┐         ┌─────────┐       ┌─────────┐
+    │Stingray│         │TrueNorth│       │TrueNorth│
+    │ CNN    │         │  SNN    │       │  SNN    │
+    └────┬───┘         └────┬────┘       └────┬────┘
+         │                  │                  │
+         │ Object           │ Motion           │ Distance
+         │ Detection        │ Events           │ Estimate
+         │                  │                  │
+         └──────────────────┼──────────────────┘
+                            │
+                     ┌──────▼──────┐
+                     │   Fusion    │
+                     │  Algorithm  │
+                     └──────┬──────┘
+                            │
+                     ┌──────▼──────┐
+                     │   Control   │
+                     │   System    │
+                     └─────────────┘
+
+Power Consumption:
+  • Stingray (CNN): 80W (intermittent)
+  • TrueNorth (SNN): 70mW (always-on)
+  • Total: ~80W vs. 200W+ with all traditional
+
+Result: 60% power savings with neuromorphic always-on sensing
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ USE CASE 3: Edge AI Gateway                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+    Multiple Data Sources
+         │
+    ┌────┴────────────────────┐
+    │                         │
+Security Cameras      IoT Sensors      Network Traffic
+(Image/Video)         (Events)         (Packets)
+    │                     │                  │
+    ▼                     ▼                  ▼
+┌─────────┐         ┌──────────┐       ┌─────────┐
+│Stingray │         │TrueNorth │       │OCTEON 10│
+│ CNN     │         │   SNN    │       │   DPI   │
+└────┬────┘         └─────┬────┘       └────┬────┘
+     │                    │                  │
+     │ Threat            │ Anomaly          │ Intrusion
+     │ Level             │ Score            │ Detection
+     │                    │                  │
+     └────────────────────┼──────────────────┘
+                          │
+                   ┌──────▼──────┐
+                   │  Security   │
+                   │   Dashboard │
+                   └─────────────┘
+
+Hardware Utilization:
+  • Stingray:  10-20% (burst workloads)
+  • TrueNorth: Always-on (70mW idle power)
+  • OCTEON:    80-95% (high packet rate)
+
+Result: Heterogeneous compute maximizes efficiency per workload type
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                        PERFORMANCE COMPARISON                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Metric              │ Stingray (ARM)  │ OCTEON 10 (DPU) │ TrueNorth (Neuro)
+────────────────────┼─────────────────┼─────────────────┼──────────────────
+Throughput          │ 10K infer/sec   │ 400M pkt/sec    │ 1K patterns/sec
+Latency (avg)       │ 1-10 ms         │ <1 μs           │ 1-5 ms
+Latency (p99)       │ 20 ms           │ 5 μs            │ 10 ms
+Power (active)      │ 80-120 W        │ 50-90 W         │ 70 mW
+Power (idle)        │ 20 W            │ 15 W            │ 20 mW
+Energy/inference    │ 8-12 mJ         │ 0.1 μJ          │ 0.07 mJ
+Cost                │ $$$             │ $$$$            │ $$$$$
+Maturity            │ Production      │ Production      │ Research
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                            QUICK START                                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Python:
+───────
+  python3 example_usage.py
+
+C++:
+────
+  g++ -std=c++17 example_usage.cpp -o decision_example
+  ./decision_example
+
+API Example:
+────────────
+  from decision_interface import *
+
+  interface = UnifiedDecisionInterface()
+  interface.register_engine(StingrayEngine({"num_cores": 32}))
+
+  decision = interface.process(
+      InputData(raw_data=np.random.rand(224, 224, 3), ...),
+      HardwareType.STINGRAY
+  )
+
+  print(f"Result: {decision.result}, Latency: {decision.latency_ms}ms")
+
+
+For full documentation, see: DECISION_INTERFACE_README.md
